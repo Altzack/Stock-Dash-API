@@ -1,7 +1,7 @@
 const path = require("path");
 const express = require("express");
 const xss = require("xss");
-const DrinksService = require("./drinks-service");
+const DrinksService = require("./watchlist-service");
 
 const drinksRouter = express.Router();
 const jsonParser = express.json();
