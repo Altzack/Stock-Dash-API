@@ -6,6 +6,7 @@ const helmet = require("helmet");
 const { NODE_ENV } = require("./config");
 const watchlistRouter = require("./watchlist/watchlist-router");
 const app = express();
+app.use(cors());
 
 const morganOption = NODE_ENV === "production" ? "tiny" : "common";
 
@@ -27,15 +28,6 @@ app.use(function errorHandler(error, req, res, next) {
     response = { message: error.message, error };
   }
   res.status(500).json(response);
-});
-
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
 });
 
 module.exports = app;
