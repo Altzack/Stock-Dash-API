@@ -16,7 +16,7 @@ watchlistRouter
   .get((req, res, next) => {
     WatchlistService.getWatchlist(req.app.get("db"))
       .then((watchlist) => {
-        res.json(watchlist.map(serializeStock));
+        res.json(watchlist);
       })
       .catch(next);
   })
