@@ -58,7 +58,7 @@ watchlistRouter
       .catch(next);
   });
 
-drinksRouter
+watchlistRouter
   .route("/:drink_id")
   .all((req, res, next) => {
     const { drink_id } = req.params;
