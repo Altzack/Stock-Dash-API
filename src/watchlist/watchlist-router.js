@@ -1,29 +1,22 @@
 const path = require("path");
 const express = require("express");
 const xss = require("xss");
-const DrinksService = require("./watchlist-service");
+const WatchlistService = require("./watchlist-service");
 
-const drinksRouter = express.Router();
+const watchlistRouter = express.Router();
 const jsonParser = express.json();
 
-const serializeDrink = (drink) => ({
-  id: drink.id,
-  title: xss(drink.title),
-  alcohol: xss(drink.alcohol),
-  mixers: xss(drink.mixers),
-  liqueurs: xss(drink.liqueurs),
-  juices: xss(drink.juices),
-  other: xss(drink.other),
-  instructions: xss(drink.instructions),
-  modified: drink.modified,
+const serializeStock = (stock) => ({
+  id: stock.id,
+  symbol: xss(stock.symbol),
 });
 
-drinksRouter
+watchlistRouter
   .route("/")
   .get((req, res, next) => {
-    DrinksService.getAllDrinks(req.app.get("db"))
-      .then((drinks) => {
-        res.json(drinks.map(serializeDrink));
+    WatchlistService.getWatchlist(req.app.get("db"))
+      .then((watchlist) => {
+        res.json(watchlist.map(serializeStock));
       })
       .catch(next);
   })
@@ -151,4 +144,4 @@ drinksRouter
       .catch(next);
   });
 
-module.exports = drinksRouter;
+module.exports = watchlistRouter;

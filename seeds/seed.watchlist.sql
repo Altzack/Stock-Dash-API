@@ -1,2 +1,3 @@
 INSERT INTO watchlist (symbol)
-VALUES(AAPL, TSLA)
+VALUES('AAPL'),
+    ('TSLA')
