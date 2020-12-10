@@ -41,90 +41,12 @@ watchlistRouter
       .catch(next);
   });
 
-watchlistRouter
-  .route("/:symbol_id")
-  .all((req, res, next) => {
-    const { drink_id } = req.params;
-    DrinksService.getById(req.app.get("db"), drink_id)
-      .then((drink) => {
-        if (!drink) {
-          return res.status(404).json({
-            error: { message: `Drink Not Found` },
-          });
-        }
-        res.drink = drink;
-        next();
-      })
-      .catch(next);
-  })
-  .get((req, res, next) => {
-    res.json({
-      id: res.drink.id,
-      modified: res.drink.modified,
-      title: res.drink.title,
-      alcohol: res.drink.alcohol,
-      instructions: res.drink.instructions,
-      mixers: res.drink.mixers,
-      liqueurs: res.drink.mixers,
-      juices: res.drink.juices,
-      other: res.drink.other,
-    });
-  })
-  .patch(jsonParser, (req, res, next) => {
-    const {
-      title,
-      alcohol,
-      instructions,
-      mixers,
-      liqueurs,
-      juices,
-      other,
-      modified,
-    } = req.body;
-    const drinkToUpdate = {
-      title,
-      alcohol,
-      instructions,
-      mixers,
-      liqueurs,
-      juices,
-      other,
-      modified,
-    };
-
-    const numberOfValues = Object.values(drinkToUpdate).filter(Boolean).length;
-
-    if (numberOfValues === 0) {
-      return res.status(400).json({
-        error: {
-          message: `Request body must contain 'title',
-          'alcohol',
-          'instructions',
-          'mixers',
-          'liqueurs',
-          'juices',
-          'other',
-          'modified'`,
-        },
-      });
-    }
-
-    DrinksService.updateDrink(
-      req.app.get("db"),
-      req.params.drink_id,
-      drinkToUpdate
-    )
-      .then((numRowsAffected) => {
-        res.status(204).end();
-      })
-      .catch(next);
-  })
-  .delete((req, res, next) => {
-    WatchlistService.deleteSymbol(req.app.get("db"), req.params.symbol_id)
-      .then(() => {
-        res.status(204).end();
-      })
-      .catch(next);
-  });
+watchlistRouter.route("/:symbol_id").delete((req, res, next) => {
+  WatchlistService.deleteSymbol(req.app.get("db"), req.params.symbol_id)
+    .then(() => {
+      res.status(204).end();
+    })
+    .catch(next);
+});
 
 module.exports = watchlistRouter;
