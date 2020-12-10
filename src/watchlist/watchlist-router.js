@@ -21,26 +21,12 @@ watchlistRouter
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const {
-      title,
-      alcohol,
-      instructions,
-      mixers,
-      liqueurs,
-      juices,
-      other,
-    } = req.body;
-    const newDrink = {
-      title,
-      alcohol,
-      instructions,
-      mixers,
-      liqueurs,
-      juices,
-      other,
+    const { symbol } = req.body;
+    const newSymbol = {
+      symbol,
     };
 
-    for (const [key, value] of Object.entries(newDrink)) {
+    for (const [key, value] of Object.entries(newSymbol)) {
       if (value == null) {
         return res.status(400).json({
           error: { message: `Missing '${key}' in request body` },
@@ -48,12 +34,9 @@ watchlistRouter
       }
     }
 
-    DrinksService.insertDrink(req.app.get("db"), newDrink)
-      .then((drink) => {
-        res
-          .status(201)
-          .location(path.posix.join(req.originalUrl, `/${drink.id}`))
-          .json(serializeDrink(drink));
+    WatchlistService.insertSymbol(req.app.get("db"), newSymbol)
+      .then((symbol) => {
+        res.status(201).json(serializeStock(symbol));
       })
       .catch(next);
   });
