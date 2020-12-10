@@ -121,8 +121,7 @@ watchlistRouter
       .catch(next);
   })
   .delete((req, res, next) => {
-    watchlistRouter
-      .deleteSymbol(req.app.get("db"), req.params.symbol_id)
+    WatchlistService.deleteSymbol(req.app.get("db"), req.params.symbol_id)
       .then(() => {
         res.status(204).end();
       })
