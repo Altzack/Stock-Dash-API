@@ -36,13 +36,16 @@ watchlistRouter
 
     WatchlistService.insertSymbol(req.app.get("db"), newSymbol)
       .then((symbol) => {
-        res.status(201).json(serializeStock(symbol));
+        res
+          .status(201)
+          .location(path.posix.join(req.originalUrl, `/${symbol.id}`));
+        json(serializeStock(symbol));
       })
       .catch(next);
   });
 
 watchlistRouter
-  .route("/:drink_id")
+  .route("/:symbol_id")
   .all((req, res, next) => {
     const { drink_id } = req.params;
     DrinksService.getById(req.app.get("db"), drink_id)
@@ -120,7 +123,8 @@ watchlistRouter
       .catch(next);
   })
   .delete((req, res, next) => {
-    DrinksService.deleteDrink(req.app.get("db"), req.params.drink_id)
+    watchlistRouter
+      .deleteSymbol(req.app.get("db"), req.params.symbol_id)
       .then(() => {
         res.status(204).end();
       })
