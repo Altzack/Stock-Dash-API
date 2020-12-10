@@ -36,8 +36,7 @@ watchlistRouter
 
     WatchlistService.insertSymbol(req.app.get("db"), newSymbol)
       .then((symbol) => {
-        res.status(201);
-        json(serializeStock(symbol));
+        res.status(201).json(serializeStock(symbol));
       })
       .catch(next);
   });
