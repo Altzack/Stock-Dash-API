@@ -26,13 +26,13 @@ watchlistRouter
       symbol,
     };
 
-    for (const [key, value] of Object.entries(newSymbol)) {
-      if (value == null) {
-        return res.status(400).json({
-          error: { message: `Missing '${key}' in request body` },
-        });
-      }
-    }
+    // for (const [key, value] of Object.entries(newSymbol)) {
+    //   if (value == null) {
+    //     return res.status(400).json({
+    //       error: { message: `Missing '${key}' in request body` },
+    //     });
+    //   }
+    // }
 
     WatchlistService.insertSymbol(req.app.get("db"), newSymbol)
       .then((symbol) => {
