@@ -17,9 +17,6 @@ const WatchlistService = {
   deleteSymbol(knex, id) {
     return knex("watchlist").where({ id }).delete();
   },
-  // updateDrink(knex, id, newStockFields) {
-  //   return knex("watchlist").where({ id }).update(newStockFields);
-  // },
 };
 
 module.exports = WatchlistService;
